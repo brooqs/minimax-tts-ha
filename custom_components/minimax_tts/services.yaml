@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "minor_version": 1,
+  "domain": "minimax_tts",
+  "services": {
+    "say": {
+      "name": "Say",
+      "description": "Speak text using MiniMax TTS.",
+      "fields": {
+        "entity_id": {
+          "name": "Entity",
+          "description": "The tts entity to use.",
+          "required": true,
+          "selector": {
+            "entity": {
+              "domain": "tts"
+            }
+          }
+        },
+        "message": {
+          "name": "Message",
+          "description": "The text to speak.",
+          "required": true,
+          "example": "Merhaba dunya"
+        },
+        "voice_id": {
+          "name": "Voice override",
+          "description": "Override the configured voice.",
+          "required": false
+        },
+        "language": {
+          "name": "Language",
+          "description": "Language code (tr, en, etc.)",
+          "required": false,
+          "default": "tr"
+        }
+      }
+    },
+    "clear_cache": {
+      "name": "Clear cache",
+      "description": "Clear cached TTS audio files from www/minimax_tts/.",
+      "fields": {}
+    }
+  }
+}

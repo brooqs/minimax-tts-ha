@@ -1,0 +1,39 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "MiniMax TTS",
+        "description": "MiniMax platform hesabinizdan bir API key gerekiyor. Key'i {docs_url} adresinden alabilirsiniz.",
+        "data": {
+          "api_key": "API Key (Bearer JWT)",
+          "base_url": "Endpoint (global veya Cin)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "API key gecersiz. Lutfen dogru Bearer JWT girdiginizden emin olun.",
+      "cannot_connect": "MiniMax API'sine baglanilamadi. Internet baglantinizi veya base_url seciminizi kontrol edin.",
+      "unknown": "Beklenmeyen bir hata olustu."
+    },
+    "abort": {
+      "already_configured": "Bu API key zaten yapilandirilmis."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "MiniMax TTS Ayarlari",
+        "data": {
+          "model": "Model",
+          "voice_id": "Voice ID (orn: Turkish_Trustworthyman)",
+          "speed": "Hiz (0.5 - 2.0)",
+          "pitch": "Pitch (-12 ile 12)",
+          "emotion": "Duygu (opsiyonel)",
+          "language_boost": "Dil",
+          "sample_rate": "Sample rate (Hz)",
+          "bitrate": "Bitrate (bps)"
+        }
+      }
+    }
+  }
+}

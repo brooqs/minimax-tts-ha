@@ -1,0 +1,73 @@
+automation:
+  - alias: "Door opens - Turkish voice"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.front_door
+        to: "on"
+    action:
+      - service: tts.minimax_say
+        target:
+          entity_id: tts.minimax_tts
+        data:
+          message: "On kapi acildi"
+        options:
+          voice_id: Turkish_Trustworthyman
+
+  - alias: "Good morning speech"
+    trigger:
+      - platform: time
+        at: "07:30:00"
+    action:
+      - service: tts.minimax_say
+        target:
+          entity_id: tts.minimax_tts
+        data:
+          message: "Gunaydin Davuthan, bugun hava 22 derece ve gunesli."
+        options:
+          voice_id: Turkish_CalmWoman
+          speed: 0.95
+          emotion: happy
+
+  - alias: "Motion detected - calm alert"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.back_yard_motion
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: alarm_control_panel.home
+        state: armed_away
+    action:
+      - service: tts.minimax_say
+        target:
+          entity_id: tts.minimax_tts
+        data:
+          message: "Dikkat, arka bahcede hareket algilandi."
+        options:
+          voice_id: Turkish_Trustworthyman
+          emotion: serious
+          speed: 0.9
+
+  - alias: "Clear MiniMax cache weekly"
+    trigger:
+      - platform: time
+        at: "03:00:00"
+    condition:
+      - condition: time
+        weekday:
+          - sun
+    action:
+      - service: tts.minimax_clear_cache
+
+script:
+  speak_in_english:
+    alias: "Speak in English"
+    sequence:
+      - service: tts.minimax_say
+        target:
+          entity_id: tts.minimax_tts
+        data:
+          message: "{{ message }}"
+          language: en
+        options:
+          voice_id: English_Graceful_Lady

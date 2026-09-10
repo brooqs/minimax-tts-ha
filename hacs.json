@@ -1,0 +1,14 @@
+{
+  "name": "MiniMax TTS",
+  "render_readme": true,
+  "country": ["TR", "US"],
+  "filename": "minimax_tts",
+  "description": "MiniMax (T2A v2) Text-to-Speech integration for Home Assistant. Turkish, English, Chinese, Japanese and 20+ other languages with 28+ system voices plus voice cloning.",
+  "homepage": "https://github.com/brooqs/minimax-tts-ha",
+  "repository": "https://github.com/brooqs/minimax-tts-ha",
+  "documentation": "https://github.com/brooqs/minimax-tts-ha#readme",
+  "issue_tracker": "https://github.com/brooqs/minimax-tts-ha/issues",
+  "codeowners": ["@brooqs"],
+  "categories": ["text-to-speech"],
+  "keywords": ["tts", "speech", "voice", "minimax", "turkish"]
+}
