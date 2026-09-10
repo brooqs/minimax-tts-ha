@@ -21,6 +21,7 @@ from homeassistant.components.tts import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.helpers.network import get_url
 
 from .const import (
     ATTRIBUTION,
@@ -273,11 +274,21 @@ class MiniMaxTTSEntity(TextToSpeechEntity):
             _LOGGER.error("Cache write error: %s", err)
             return ("audio/mpeg", result.audio)
 
-        # Always return a RELATIVE URL — HA will resolve it against its own
-        # base_url (internal_url if configured, otherwise external). This
-        # avoids reachability issues when external_url (home.dhy.tr) is not
-        # accessible from the media player (LAN/mesh only).
-        url = f"/local/minimax_tts/{filename}"
+        # Build the served URL.
+        # Prefer internal URL (LAN/mesh reachable) over external (often
+        # behind a reverse proxy / not reachable from media_player).
+        # If neither is configured, return a relative path so HA's
+        # media_player can resolve it against its own base.
+        url: str
+        try:
+            internal = get_url(self.hass, prefer_external=False)
+            external = get_url(self.hass, prefer_external=True)
+            # Internal URL might equal external if not configured separately
+            # We bias toward internal — it's what works on the LAN.
+            base = internal if internal else external
+            url = f"{base}/local/minimax_tts/{filename}" if base else f"/local/minimax_tts/{filename}"
+        except Exception:  # noqa: BLE001
+            url = f"/local/minimax_tts/{filename}"
 
         _LOGGER.debug(
             "MiniMax TTS: %s -> %s (%d bytes, %.2fs)",

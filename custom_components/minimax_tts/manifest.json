@@ -1,7 +1,7 @@
 {
   "domain": "minimax_tts",
   "name": "MiniMax TTS",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "documentation": "https://github.com/brooqs/minimax-tts-ha",
   "issue_tracker": "https://github.com/brooqs/minimax-tts-ha/issues",
   "codeowners": ["@brooqs"],
