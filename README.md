@@ -1,10 +1,16 @@
 # MiniMax TTS for Home Assistant
 
+![MiniMax TTS Logo](branding/banner.png)
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz)
-[![HA](https://img.shields.io/badge/Home%20Assistant-2026.8+-blue.svg)](https://www.home-assistant.io/)
+[![HA](https://img.shields.io/badge/Home%20Assistant-2026.8+-blue.svg)](https://www.home-assistant.io)
 
-Cloud-based Text-to-Speech integration for Home Assistant using the MiniMax T2A v2 API.
+> **Powered by MiniMax**
+> This integration uses the MiniMax Text-to-Audio API (T2A v2) as its backend.
+> MiniMax provides the underlying speech synthesis technology - we just wrap their API for Home Assistant.
+
+Cloud-based Text-to-Speech integration for Home Assistant using the [MiniMax T2A v2 API](https://platform.minimax.io/docs/api-reference/speech-t2a-http).
 
 Features **28+ system voices** including native **Turkish** (`Turkish_Trustworthyman`, `Turkish_CalmWoman`), plus English, Chinese, Japanese, Arabic, German, French, and 15+ other languages. Voice cloning and emotion control (happy/sad/angry/calm/whisper/etc.) supported.
 
@@ -180,6 +186,18 @@ This integration wraps the [MiniMax T2A v2 endpoint](https://platform.minimax.io
 ## License
 
 Apache 2.0 - see [LICENSE](LICENSE).
+
+---
+
+## Credits & Trademark Notice
+
+This integration is an unofficial community project and is **not affiliated with, endorsed by, or sponsored by MiniMax**. It is independently developed and licensed under Apache 2.0.
+
+**Powered by [MiniMax](https://www.MiniMax.io)** - Text-to-Speech functionality is provided by the MiniMax T2A v2 API. All audio synthesis, voice models, and related AI capabilities are the property of MiniMax.
+
+The "MiniMax" name is a trademark of MiniMax. This project uses the name solely to identify the underlying service provider, in accordance with fair use for attribution and interoperability purposes. No MiniMax logos or proprietary brand assets are included in this repository - the icons provided are original work.
+
+By using this integration, you agree to MiniMax's [Terms of Service](https://platform.minimax.io/protocol/terms-of-service) in addition to this project's Apache 2.0 license.
 
 ## Credits
 

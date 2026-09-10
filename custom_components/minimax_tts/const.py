@@ -7,6 +7,10 @@ DOMAIN: Final = "minimax_tts"
 MANUFACTURER: Final = "MiniMax"
 DEFAULT_NAME: Final = "MiniMax TTS"
 
+# Branding / attribution - shown in HA UI and logs
+ATTRIBUTION: Final = "Powered by MiniMax"
+ATTRIBUTION_URL: Final = "https://www.MiniMax.io"
+
 # API endpoints
 CONF_BASE_URL: Final = "base_url"
 DEFAULT_BASE_URL: Final = "https://api.minimax.io/v1/t2a_v2"

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5B6CFF"/>
+      <stop offset="100%" stop-color="#7B5BFF"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect x="8" y="8" width="240" height="240" rx="56" ry="56" fill="url(#bg)"/>
+
+  <!-- Letter M (representing MiniMax, stylized) -->
+  <path d="M 60 180 L 60 80 L 88 80 L 128 140 L 168 80 L 196 80 L 196 180 L 178 180 L 178 110 L 138 170 L 118 170 L 78 110 L 78 180 Z"
+        fill="#FFFFFF" opacity="0.95"/>
+
+  <!-- Sound wave bars (representing TTS) -->
+  <rect x="46" y="206" width="8" height="14" rx="2" fill="url(#wave)"/>
+  <rect x="62" y="200" width="8" height="20" rx="2" fill="url(#wave)"/>
+  <rect x="78" y="194" width="8" height="26" rx="2" fill="url(#wave)"/>
+  <rect x="94" y="200" width="8" height="20" rx="2" fill="url(#wave)"/>
+  <rect x="110" y="186" width="8" height="34" rx="2" fill="url(#wave)"/>
+  <rect x="126" y="180" width="8" height="40" rx="2" fill="url(#wave)"/>
+  <rect x="142" y="186" width="8" height="34" rx="2" fill="url(#wave)"/>
+  <rect x="158" y="194" width="8" height="26" rx="2" fill="url(#wave)"/>
+  <rect x="174" y="200" width="8" height="20" rx="2" fill="url(#wave)"/>
+  <rect x="190" y="206" width="8" height="14" rx="2" fill="url(#wave)"/>
+  <rect x="206" y="200" width="8" height="20" rx="2" fill="url(#wave)"/>
+</svg>
