@@ -129,6 +129,7 @@ class MiniMaxTTSEntity(TextToSpeechEntity):
     _attr_supported_languages: list[str] = list(_LANG_MAP.keys())
     _attr_supported_options: list[str] = [
         CONF_VOICE_ID,
+        "voice",  # HA's standard voice option (maps to voice_id)
         CONF_MODEL,
         CONF_SPEED,
         CONF_PITCH,
@@ -176,6 +177,7 @@ class MiniMaxTTSEntity(TextToSpeechEntity):
         """Return default options (overrides per-call defaults)."""
         return {
             CONF_VOICE_ID: self._voice_id,
+            "voice": self._voice_id,  # alias for HA's standard voice option
             CONF_MODEL: self._model,
             CONF_SPEED: self._speed,
             CONF_PITCH: self._pitch,
@@ -192,11 +194,18 @@ class MiniMaxTTSEntity(TextToSpeechEntity):
         return [Voice(vid, name) for vid, name in voices] or None
 
     def _resolve_options(self, options: dict[str, Any] | None) -> dict[str, Any]:
-        """Merge: defaults < per-call options (per-call wins)."""
+        """Merge: defaults < per-call options (per-call wins).
+
+        Maps HA's standard 'voice' key onto our CONF_VOICE_ID.
+        """
         merged = self.default_options.copy()
         for key, val in (options or {}).items():
             if key in merged:
                 merged[key] = val
+            elif key == "voice":
+                # HA standard 'voice' alias -> our voice_id
+                merged[CONF_VOICE_ID] = val
+                merged["voice"] = val
         return merged
 
     async def async_get_tts_audio(
