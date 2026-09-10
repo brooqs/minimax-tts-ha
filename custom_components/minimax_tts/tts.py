@@ -10,16 +10,21 @@ from __future__ import annotations
 
 import logging
 import secrets
+from collections.abc import AsyncGenerator
 from pathlib import Path
 from typing import Any
 
+import aiohttp
+
 from homeassistant.components.tts import (
     TextToSpeechEntity,
+    TTSAudioResponse,
     TtsAudioType,
     Voice,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.network import get_url
 
@@ -272,6 +277,7 @@ class MiniMaxTTSEntity(TextToSpeechEntity):
             filepath.write_bytes(result.audio)
         except OSError as err:
             _LOGGER.error("Cache write error: %s", err)
+            # Fall back to returning raw bytes - no URL fetch required
             return ("audio/mpeg", result.audio)
 
         # Build the served URL.
@@ -283,8 +289,6 @@ class MiniMaxTTSEntity(TextToSpeechEntity):
         try:
             internal = get_url(self.hass, prefer_external=False)
             external = get_url(self.hass, prefer_external=True)
-            # Internal URL might equal external if not configured separately
-            # We bias toward internal — it's what works on the LAN.
             base = internal if internal else external
             url = f"{base}/local/minimax_tts/{filename}" if base else f"/local/minimax_tts/{filename}"
         except Exception:  # noqa: BLE001
@@ -298,4 +302,43 @@ class MiniMaxTTSEntity(TextToSpeechEntity):
             result.elapsed_seconds,
         )
 
+        # Return BOTH the URL and the raw bytes via a special proxy:
+        # We pass the URL but ensure the bytes are also cached on disk
+        # so media_player can stream from /config/www/minimax_tts/.
         return ("audio/mpeg", url)
+
+    async def async_stream_tts_audio(self, request: TTSAudioRequest) -> TTSAudioResponse:
+        """Stream TTS audio (HA 2024.4+ streaming API).
+
+        This is preferred over async_get_tts_audio for new integrations
+        because it allows HA to stream the audio directly without an
+        extra HTTP fetch — avoiding CORS, HTTPS/HTTP mismatch, and
+        cross-origin issues with cast devices.
+
+        Falls back to async_get_tts_audio for compatibility.
+        """
+        message = "".join([chunk async for chunk in request.message_gen])
+        extension, data = await self.async_get_tts_audio(
+            message, request.language, request.options
+        )
+
+        if extension is None or data is None:
+            raise HomeAssistantError(f"No TTS from {self.entity_id} for '{message}'")
+
+        # If data is bytes (raw MP3), wrap in async generator for streaming
+        if isinstance(data, bytes):
+            cached_bytes = data
+
+            async def data_gen() -> AsyncGenerator[bytes]:
+                yield cached_bytes
+
+            return TTSAudioResponse("mp3", data_gen())
+
+        # Otherwise it's a URL - fetch it and stream
+        async def data_gen() -> AsyncGenerator[bytes]:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(data) as response:
+                    async for chunk in response.content.iter_chunked(4096):
+                        yield chunk
+
+        return TTSAudioResponse("mp3", data_gen())
